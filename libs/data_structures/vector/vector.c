@@ -1,5 +1,7 @@
 #include "vector.h"
 
+
+// first ---------------------------
 vector createVector(size_t n) {
     int *a;
     if (n == 0) {
@@ -42,4 +44,36 @@ void deleteVector(vector *v) {
     free(v->data);
     v->capacity = 0;
     v->size = 0;
+}
+
+// second --------------------------
+
+bool isEmpty(vector *v) {
+    return v->size == 0;
+}
+
+bool isFull(vector *v) {
+    return v->size == v->capacity;
+}
+
+int getVectorValue(vector *v, size_t i) {
+    return (i < v->size) ? v->data[i] : -1;
+}
+
+void pushBack(vector *v, int x) {
+    if (v->capacity == 0)
+        reserve(v, 1);
+    else if (isFull(v)) {
+        reserve(v, v->capacity * 2);
+    }
+    v->data[v->size] = x;
+    v->size++;
+}
+
+void popBack(vector *v) {
+    if (isEmpty(v)) {
+        fprintf(stderr, "empty vector ");
+        exit(1);
+    }
+    v->size--;
 }
