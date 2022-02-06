@@ -1,7 +1,6 @@
 #include "vector.h"
 
 
-// first ---------------------------
 vector createVector(size_t n) {
     int *a;
     if (n == 0) {
@@ -46,7 +45,6 @@ void deleteVector(vector *v) {
     v->size = 0;
 }
 
-// second --------------------------
 
 bool isEmpty(vector *v) {
     return v->size == 0;
@@ -61,10 +59,8 @@ int getVectorValue(vector *v, size_t i) {
 }
 
 void pushBack(vector *v, int x) {
-    if (v->capacity == 0)
-        reserve(v, 1);
-    else if (isFull(v)) {
-        reserve(v, v->capacity * 2);
+    if (isFull(v)) {
+        reserve(v, v->capacity ? v->capacity * 2 : 1);
     }
     v->data[v->size] = x;
     v->size++;
@@ -78,14 +74,13 @@ void popBack(vector *v) {
     v->size--;
 }
 
-// third -------------------------
 
 int* atVector(vector *v, size_t index) {
     if (index >= v->size) {
         fprintf(stderr, "IndexError: a[%zu] is not exists", index);
         exit(1);
     }
-    return &v->data[index];
+    return v->data + index;
 }
 
 int* back(vector *v) {
@@ -93,7 +88,7 @@ int* back(vector *v) {
         fprintf(stderr, "IndexError: empty vector");
         exit(1);
     }
-    return &v->data[v->size - 1];
+    return v->data + v->size - 1;
 }
 
 int* front(vector *v) {
@@ -101,5 +96,5 @@ int* front(vector *v) {
         fprintf(stderr, "IndexError: empty vector");
         exit(1);
     }
-    return &v->data[0];
+    return v->data;
 }

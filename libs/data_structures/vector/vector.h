@@ -12,6 +12,7 @@ typedef struct vector {
     size_t capacity;
 } vector;
 
+
 // возвращает структуру-дескриптор вектор из n значений
 vector createVector(size_t n);
 

@@ -48,7 +48,7 @@ void test_popBack_notEmptyVector() {
 
 void test_atVector_notEmptyVector() {
     vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {  // {1 2 3 4 _}
+    for (int i = 1; i < 5; i++) {
         pushBack(&v, i);
     }
 
@@ -58,7 +58,7 @@ void test_atVector_notEmptyVector() {
 
 void test_atVector_requestToLastElement() {
     vector v = createVector(4);
-    for (int i = 1; i < 5; i++) {  // {1 2 3 4}
+    for (int i = 1; i < 5; i++) {
         pushBack(&v, i);
     }
 
@@ -67,7 +67,7 @@ void test_atVector_requestToLastElement() {
 
 void test_back_notEmptyVector() {
     vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {  // {1 2 3 4 _}
+    for (int i = 1; i < 5; i++) {
         pushBack(&v, i);
     }
 
@@ -83,7 +83,7 @@ void test_back_oneElementInVector() {
 
 void test_front_notEmptyVector() {
     vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {  // {1 2 3 4 _}
+    for (int i = 1; i < 5; i++) {
         pushBack(&v, i);
     }
 
