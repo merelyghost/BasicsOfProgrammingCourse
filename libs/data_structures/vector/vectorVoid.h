@@ -15,7 +15,7 @@ typedef struct vectorVoid {
     size_t baseTypeSize;
 } vectorVoid;
 
-// возвращает структуру-дескриптор вектор из n значений
+// возвращает структуру-дескриптор вектор из n значений размера baseTypeSize
 vectorVoid createVectorV(size_t n, size_t baseTypeSize);
 
 // изменяет количество памяти, выделенное под хранение элементов вектора v, на newCapacity

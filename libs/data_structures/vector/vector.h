@@ -32,9 +32,9 @@ void deleteVector(vector *v);
 bool isEmpty(vector *v);
 
 // возвращает значение "истина", если вектор v является полным, иначе - "ложь"
-bool idFull(vector *v);
+bool isFull(vector *v);
 
-// возвращает i-ый элемент вектора v, если такой элемент есть, иначе - "-1"
+// возвращает i-ый элемент вектора v
 int getVectorValue(vector *v, size_t i);
 
 // добавляет элемент x в конец вектора v,
