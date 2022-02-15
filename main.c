@@ -52,6 +52,12 @@ void test_swapRowsWithMinAndMaxEl3() {
     assert(areTwoMatricesEqual(m, mRes));
 }
 
+void test_swapRowsWithMinAndMaxEl() {
+    test_swapRowsWithMinAndMaxEl1();
+    test_swapRowsWithMinAndMaxEl2();
+    test_swapRowsWithMinAndMaxEl3();
+}
+
 //---------------------task 2---------------------
 
 int getMax(int *a, int n) {
@@ -134,6 +140,12 @@ void test_sortRowsByMaxElement3() {
     assert(areTwoMatricesEqual(m, mRes));
 }
 
+void test_sortRowsByMaxElement() {
+    test_sortRowsByMaxElement1();
+    test_sortRowsByMaxElement2();
+    test_sortRowsByMaxElement3();
+}
+
 //----------------task 3-------------
 
 void sortColsByMinElement(matrix m) {
@@ -184,18 +196,77 @@ void test_sortColsByMinElement3() {
     assert(areTwoMatricesEqual(m, mRes));
 }
 
-void test() {
-    test_swapRowsWithMinAndMaxEl1();
-    test_swapRowsWithMinAndMaxEl2();
-    test_swapRowsWithMinAndMaxEl3();
-
-    test_sortRowsByMaxElement1();
-    test_sortRowsByMaxElement2();
-    test_sortRowsByMaxElement3();
-
+void test_sortColsByMinElement() {
     test_sortColsByMinElement1();
     test_sortColsByMinElement2();
     test_sortColsByMinElement3();
+}
+
+//-----------------task 4------------------
+
+matrix mulMatrices(matrix m1, matrix m2) {
+    if (m1.nCols != m2.nRows) {
+        fprintf(stderr, "different numbers of rows and columns");
+        exit(1);
+    }
+
+    matrix product = getMemMatrix(m1.nRows, m2.nCols);
+    for (int i = 0; i < m1.nRows; i++)
+        for (int j = 0; j < m2.nCols; j++) {
+            product.values[i][j] = 0;
+            for (int k = 0; k < m2.nRows; k++)
+                product.values[i][j] += m1.values[i][k] * m2.values[k][j];
+        }
+    return (matrix) product;
+}
+
+void getSquareOfMatrixIfSymmetric(matrix *m) {
+    if (isSymmetricMatrix(*m))
+        *m = mulMatrices(*m, *m);
+}
+
+void test_getSquareOfMatrixIfSymmetric1() {
+    int a[] = {1, 2, 3,
+               2, 5, 6,
+               3, 6, 2};
+    matrix m = createMatrixFromArray(a, 3, 3);
+
+    getSquareOfMatrixIfSymmetric(&m);
+
+    int res[] = {14, 30, 21,
+                 30, 65, 48,
+                 21, 48, 49};
+    matrix mRes = createMatrixFromArray(res, 3, 3);
+
+    assert(areTwoMatricesEqual(m, mRes));
+}
+
+void test_getSquareOfMatrixIfSymmetric2() {
+    int a[] = {1, 0, 0,
+               0, 1, 0,
+               0, 0, 1};
+    matrix m = createMatrixFromArray(a, 3, 3);
+
+    getSquareOfMatrixIfSymmetric(&m);
+
+    int res[] = {1, 0, 0,
+                 0, 1, 0,
+                 0, 0, 1};
+    matrix mRes = createMatrixFromArray(res, 3, 3);
+
+    assert(areTwoMatricesEqual(m, mRes));
+}
+
+void test_getSquareOfMatrixIfSymmetric() {
+    test_getSquareOfMatrixIfSymmetric1();
+    test_getSquareOfMatrixIfSymmetric2();
+}
+
+void test() {
+    test_swapRowsWithMinAndMaxEl();
+    test_sortRowsByMaxElement();
+    test_sortColsByMinElement();
+    test_getSquareOfMatrixIfSymmetric();
 
     printf("everything is ok");
 }
