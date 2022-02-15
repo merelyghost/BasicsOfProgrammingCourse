@@ -339,12 +339,50 @@ void test_transposeIfMatrixHasNotEqualSumOfRows() {
     test_transposeIfMatrixHasNotEqualSumOfRows3();
 }
 
+//------------------------task 6---------------
+
+bool isMutuallyInverseMatrices(matrix m1, matrix m2) {
+    return isEMatrix(mulMatrices(m1, m2));
+}
+
+void test_isMutuallyInverseMatrices1() {
+    int a[] = {3, 4,
+               5, 7};
+    matrix m1 = createMatrixFromArray(a, 2, 2);
+
+    int b[] = {7, -4,
+               -5, 3};
+    matrix m2 = createMatrixFromArray(b, 2, 2);
+
+    assert(isMutuallyInverseMatrices(m1, m2));
+}
+
+void test_isMutuallyInverseMatrices2() {
+    int a[] = {2, 5, 7,
+               6, 3, 4,
+               5, -2, -3};
+    matrix m1 = createMatrixFromArray(a, 3, 3);
+
+    int b[] = {1, -1, 1,
+               -38, 41, -34,
+               27, -29, 24};
+    matrix m2 = createMatrixFromArray(b, 3, 3);
+
+    assert(isMutuallyInverseMatrices(m1, m2));
+}
+
+void test_isMutuallyInverseMatrices() {
+    test_isMutuallyInverseMatrices1();
+    test_isMutuallyInverseMatrices2();
+}
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
     test_sortColsByMinElement();
     test_getSquareOfMatrixIfSymmetric();
     test_transposeIfMatrixHasNotEqualSumOfRows();
+    test_isMutuallyInverseMatrices();
 
     printf("everything is ok\n");
 }
