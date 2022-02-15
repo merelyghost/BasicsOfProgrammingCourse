@@ -1,114 +1,63 @@
-#include <assert.h>
-#include "libs/data_structures/vector/vector.h"
+#include "libs/data_structures/matrix/matrix.h"
 
-
-void test_getVectorValue_NotEmptyVector() {
-    vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {
-        pushBack(&v, i);
-    }
-    assert(getVectorValue(&v, 2) == 3);
+void swapRowsWithMinAndMaxEl(matrix m) {
+    position minPos = getMinValuePos(m);
+    position maxPos = getMaxValuePos(m);
+    swapRows(m, minPos.rowIndex, maxPos.rowIndex);
 }
 
-void test_pushBack_emptyVector() {
-    vector v = createVector(0);
-    pushBack(&v, 5);
+void test_swapRowsWithMinAndMaxEl1() {
+    int a[9] = {1, 2, 3,
+                4, 5, 6,
+                7, 8, 9};
+    matrix m = createMatrixFromArray(a, 3, 3);
 
-    assert(v.capacity == 1);
-    assert(v.size == 1);
-    assert(v.data[0] == 5);
+    swapRowsWithMinAndMaxEl(m);
+
+    int res[9] = {7, 8, 9,
+                  4, 5, 6,
+                  1, 2, 3};
+    matrix mRes = createMatrixFromArray(res, 3, 3);
+
+    assert(areTwoMatricesEqual(m, mRes));
 }
 
-void test_pushBack_fullVector() {
-    vector v = createVector(3);
-    for (int i = 1; i < 5; i++) {
-        pushBack(&v, i);
-    }
+void test_swapRowsWithMinAndMaxEl2() {
+    int a[9] = {1, 2, 9,
+                4, 5, 6,
+                7, 8, 3};
+    matrix m = createMatrixFromArray(a, 3, 3);
 
-    assert(v.capacity == 6);
-    assert(v.size == 4);
-    assert(v.data[3] == 4);
+    swapRowsWithMinAndMaxEl(m);
+
+    int res[9] = {1, 2, 9,
+                  4, 5, 6,
+                  7, 8, 3};
+    matrix mRes = createMatrixFromArray(res, 3, 3);
+
+    assert(areTwoMatricesEqual(m, mRes));
 }
 
-void test_popBack_notEmptyVector() {
-    vector v = createVector(0);
-    pushBack(&v, 10);
-    assert(v.size == 1);
+void test_swapRowsWithMinAndMaxEl3() {
+    int a[] = {1};
+    matrix m = createMatrixFromArray(a, 1, 1);
 
-    popBack(&v);
-    assert(v.size == 0);
-    assert(v.capacity == 1);
+    swapRowsWithMinAndMaxEl(m);
+
+    int res[] = {1};
+    matrix mRes = createMatrixFromArray(res, 1, 1);
+
+    assert(areTwoMatricesEqual(m, mRes));
 }
-
-void test_atVector_notEmptyVector() {
-    vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {
-        pushBack(&v, i);
-    }
-
-    assert(atVector(&v, 0) == v.data);
-    assert(atVector(&v, 2) == v.data + 2);
-}
-
-void test_atVector_requestToLastElement() {
-    vector v = createVector(4);
-    for (int i = 1; i < 5; i++) {
-        pushBack(&v, i);
-    }
-
-    assert(atVector(&v, 3) == v.data + 3);
-}
-
-void test_back_notEmptyVector() {
-    vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {
-        pushBack(&v, i);
-    }
-
-    assert(back(&v) == &v.data[3]);
-}
-
-void test_back_oneElementInVector() {
-    vector v = createVector(1);
-    pushBack(&v, 7);
-
-    assert(back(&v) == v.data);
-}
-
-void test_front_notEmptyVector() {
-    vector v = createVector(5);
-    for (int i = 1; i < 5; i++) {
-        pushBack(&v, i);
-    }
-
-    assert(front(&v) == &v.data[0]);
-}
-
-void test_front_oneElementInVector() {
-    vector v = createVector(1);
-    pushBack(&v, 7);
-
-    assert(front(&v) == v.data);
-}
-
 
 void test() {
-    test_getVectorValue_NotEmptyVector();
-    test_pushBack_emptyVector();
-    test_pushBack_fullVector();
-    test_popBack_notEmptyVector();
-    test_atVector_notEmptyVector();
-    test_atVector_requestToLastElement();
-    test_back_notEmptyVector();
-    test_back_oneElementInVector();
-    test_front_notEmptyVector();
-    test_front_oneElementInVector();
+    test_swapRowsWithMinAndMaxEl1();
+    test_swapRowsWithMinAndMaxEl2();
+    test_swapRowsWithMinAndMaxEl3();
 
     printf("everything is ok");
 }
 
-
 int main() {
     test();
-
 }
