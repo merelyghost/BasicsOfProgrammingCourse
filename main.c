@@ -134,6 +134,56 @@ void test_sortRowsByMaxElement3() {
     assert(areTwoMatricesEqual(m, mRes));
 }
 
+//----------------task 3-------------
+
+void sortColsByMinElement(matrix m) {
+    insertionSortColsMatrixByColCriteria(m, getMin);
+}
+
+void test_sortColsByMinElement1() {
+    int a[] = {8, 1, 3,
+               4, 5, 6,
+               5, 3, 2};
+    matrix m = createMatrixFromArray(a, 3, 3);
+
+    sortColsByMinElement(m);
+
+    int res[] = {1, 3, 8,
+                 5, 6, 4,
+                 3, 2, 5};
+    matrix mRes = createMatrixFromArray(res, 3, 3);
+
+    assert(areTwoMatricesEqual(m, mRes));
+}
+
+void test_sortColsByMinElement2() {
+    int a[] = {8, 1, 3, 0,
+               4, 5, 6, 0,
+               5, 3, 2, 0};
+    matrix m = createMatrixFromArray(a, 3, 4);
+
+    sortColsByMinElement(m);
+
+    int res[] = {0, 1, 3, 8,
+                 0, 5, 6, 4,
+                 0, 3, 2, 5};
+    matrix mRes = createMatrixFromArray(res, 3, 4);
+
+    assert(areTwoMatricesEqual(m, mRes));
+}
+
+void test_sortColsByMinElement3() {
+    int a[] = {7};
+    matrix m = createMatrixFromArray(a, 1, 1);
+
+    sortColsByMinElement(m);
+
+    int res[] = {7};
+    matrix mRes = createMatrixFromArray(res, 1, 1);
+
+    assert(areTwoMatricesEqual(m, mRes));
+}
+
 void test() {
     test_swapRowsWithMinAndMaxEl1();
     test_swapRowsWithMinAndMaxEl2();
@@ -142,6 +192,10 @@ void test() {
     test_sortRowsByMaxElement1();
     test_sortRowsByMaxElement2();
     test_sortRowsByMaxElement3();
+
+    test_sortColsByMinElement1();
+    test_sortColsByMinElement2();
+    test_sortColsByMinElement3();
 
     printf("everything is ok");
 }
