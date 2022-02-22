@@ -728,6 +728,88 @@ void test_getNSpecialElement() {
 }
 
 
+//------------task 12-----------
+
+position getLeftMin(matrix m) {
+    int minEl = m.values[0][0];
+    position minPos = {0, 0};
+
+    for (int i = 0; i < m.nCols; i++) {
+        for (int j = 0; j < m.nRows; j++) {
+            if (m.values[j][i] < minEl) {
+                minEl = m.values[j][i];
+                minPos = (position) {j, i};
+            }
+        }
+    }
+
+    return minPos;
+}
+
+void test_getLeftMin() {
+    int a[] = {3, 2, 7,
+               2, 7, 2};
+    matrix m = createMatrixFromArray(a, 2, 3);
+
+    position pos = getLeftMin(m);
+
+    assert(pos.rowIndex == 1);
+    assert(pos.colIndex == 0);
+}
+
+
+void swapPenultimateRow(matrix m, int n) {
+    if (m.nRows < 2) {
+        fprintf(stderr, "there is no penultimate row");
+        exit(1);
+    }
+
+    int col[m.nRows];
+    position min = getLeftMin(m);
+
+    for (int i = 0; i < m.nRows; i++)
+        col[i] = m.values[i][min.colIndex];
+
+    memcpy(m.values[m.nRows - 2], col, sizeof(int) * m.nCols);
+}
+
+void test_swapPenultimateRow1() {
+    int a[] = {7, 2, 3,
+               3, 5, 7,
+               2, 4, 3};
+    matrix m1 = createMatrixFromArray(a, 3, 3);
+
+    int b[] = {7, 2, 3,
+               7, 3, 2,
+               2, 4, 3};
+    matrix m2 = createMatrixFromArray(a, 3, 3);
+
+    assert(areTwoMatricesEqual(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+
+void test_swapPenultimateRow2() {
+    int a[] = {7, 2,
+               -1, 5};
+    matrix m1 = createMatrixFromArray(a, 2, 2);
+
+    int b[] = {7, -1,
+               2, 5};
+    matrix m2 = createMatrixFromArray(a, 2, 2);
+
+    assert(areTwoMatricesEqual(m1, m2));
+
+    freeMemMatrix(m1);
+    freeMemMatrix(m2);
+}
+
+void test_swapPenultimateRow() {
+    test_swapPenultimateRow1();
+    test_swapPenultimateRow2();
+}
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
@@ -740,6 +822,8 @@ void test() {
     test_sortByDistances();
     test_countEqClassesByRowsSum();
     test_getNSpecialElement();
+    test_getLeftMin();
+    test_swapPenultimateRow();
 
     printf("everything is ok\n");
 }
