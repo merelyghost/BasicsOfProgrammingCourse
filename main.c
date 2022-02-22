@@ -456,7 +456,55 @@ void test_findSumOfMaxesOfPseudoDiagonal() {
 
 //-----------------task 8--------------
 
+int min(int a, int b) {
+    return a < b ? a : b;
+}
 
+int getMinInArea(matrix m) {
+    position minPos = getMaxValuePos(m);
+    int minEl = m.values[minPos.rowIndex][minPos.colIndex];
+
+    int left = minPos.colIndex;
+    int right = minPos.colIndex;
+    for (int i = minPos.rowIndex - 1; i >= 0; i--) {
+        left = left > 0 ? left - 1 : left;
+        right = right < m.nCols - 1 ? right + 1 : right;
+        minEl = min(getMin(&m.values[i][left], right - left + 1), minEl);
+    }
+
+    return minEl;
+}
+
+void test_getMinInArea1() {
+    int a[] = {2, 7, 5,
+               1, 8, 4,
+               9, 11, 3};
+    matrix m = createMatrixFromArray(a, 3, 3);
+
+    assert(getMinInArea(m) == 1);
+}
+
+void test_getMinInArea2() {
+    int a[] = {2, 7, 5, -7,
+               1, 8, 20, 10,
+               9, 11, 3, 4};
+    matrix m = createMatrixFromArray(a, 3, 4);
+
+    assert(getMinInArea(m) == -7);
+}
+
+void test_getMinInArea3() {
+    int a[] = {2};
+    matrix m = createMatrixFromArray(a, 1, 1);
+
+    assert(getMinInArea(m) == 2);
+}
+
+void test_getMinInArea() {
+    test_getMinInArea1();
+    test_getMinInArea2();
+    test_getMinInArea3();
+}
 
 void test() {
     test_swapRowsWithMinAndMaxEl();
@@ -466,6 +514,7 @@ void test() {
     test_transposeIfMatrixHasNotEqualSumOfRows();
     test_isMutuallyInverseMatrices();
     test_findSumOfMaxesOfPseudoDiagonal();
+    test_getMinInArea();
 
     printf("everything is ok\n");
 }
