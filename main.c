@@ -900,6 +900,61 @@ void test_countNonDescendingRowsMatrices() {
     test_countNonDescendingRowsMatrices3();
 }
 
+//------------------task 14 ---------------
+
+int countValues(const int *a, int n, int value) {
+    int count = 0;
+    for (int i = 0; i < n; i++)
+        if (a[i] == value)
+            count++;
+
+    return count;
+}
+
+int countZeroRows(matrix m) {
+    int zeroRows = 0;
+    for (int i = 0; i < m.nRows; i++)
+        if (countValues(m.values[i], m.nCols, 0) == m.nCols)
+            zeroRows++;
+
+    return zeroRows;
+}
+
+void printMatrixWithMaxZeroRows(matrix *ms, int nMatrix) {
+    int zeroRowsCount[nMatrix];
+    for (int k = 0; k < nMatrix; k++)
+        zeroRowsCount[k] = countZeroRows(ms[k]);
+
+    int maxZeroRows = getMax(zeroRowsCount, nMatrix);
+
+    for (int i = 0; i < nMatrix; i++)
+        if (zeroRowsCount[i] == maxZeroRows)
+            outputMatrix(ms[i]);
+}
+
+void test_countZeroRows1() {
+    int a[] = {0, 0,
+               4, 0,
+               0, 0};
+    matrix m = createMatrixFromArray(a, 3, 2);
+
+    assert(countZeroRows(m) == 2);
+}
+
+void test_countZeroRows2() {
+    int a[] = {5, 1,
+               4, 7,
+               9, 10};
+    matrix m = createMatrixFromArray(a, 3, 2);
+
+    assert(countZeroRows(m) == 0);
+}
+
+void test_countZeroRows() {
+    test_countZeroRows1();
+    test_countZeroRows2();
+}
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
@@ -915,6 +970,7 @@ void test() {
     test_getLeftMin();
     test_swapPenultimateRow();
     test_countNonDescendingRowsMatrices();
+    test_countZeroRows();
 
     printf("everything is ok\n");
 }
