@@ -396,7 +396,7 @@ long long findSumOfMaxesOfPseudoDiagonal(matrix m) {
         maxElements[i] = INT_MIN;
 
     for (int i = 0; i < m.nCols; i++) {
-        for (int j = 0; j < m.nRows; j++){
+        for (int j = 0; j < m.nRows; j++) {
             int index = i - j + m.nRows - 1;
             maxElements[index] = max(maxElements[index], m.values[j][i]);
         }
@@ -405,7 +405,6 @@ long long findSumOfMaxesOfPseudoDiagonal(matrix m) {
     long long sum = getSum(maxElements, size);
     return sum;
 }
-
 
 
 void test_findSumOfMaxesOfPseudoDiagonal1() {
@@ -506,6 +505,88 @@ void test_getMinInArea() {
     test_getMinInArea3();
 }
 
+//------------------------task 9--------------
+
+float getDistance(int *a, int n) {
+    float distance = 0;
+    for (int i = 0; i < n; i++) {
+        distance += (float) (a[i] * a[i]);
+    }
+    return sqrtf(distance);
+}
+
+void insertionSortRowsMatrixByRowCriteriaF(matrix m, float (*criteria)(int *, int)) {
+    float resultsCriteria[m.nRows];
+    for (int i = 0; i < m.nRows; i++)
+        resultsCriteria[i] = criteria(m.values[i], m.nCols);
+
+    for (int i = 1; i < m.nRows; i++) {
+        for (int j = i; j > 0 && resultsCriteria[j - 1] > resultsCriteria[j]; j--) {
+            swap(&resultsCriteria[j - 1], &resultsCriteria[j], sizeof(float));
+            swapRows(m, j, j - 1);
+        }
+    }
+}
+
+void sortByDistances(matrix m) {
+    insertionSortRowsMatrixByRowCriteriaF(m, getDistance);
+}
+
+
+void test_sortByDistances1() {
+    int a[] = {6, 8, 9, 2,
+               10, 11, 5, 1,
+               7, 12, 3, 4};
+    matrix m1 = createMatrixFromArray(a, 3, 4);
+
+    sortByDistances(m1);
+
+    int b[] = {6, 8, 9, 2,
+               7, 12, 3, 4,
+               10, 11, 5, 1};
+    matrix m2 = createMatrixFromArray(b, 3, 4);
+
+    assert(areTwoMatricesEqual(m1, m2));
+}
+
+
+void test_sortByDistances2() {
+    int a[] = {6, 8, 9, 2};
+    matrix m1 = createMatrixFromArray(a, 1, 4);
+
+    sortByDistances(m1);
+
+    int b[] = {6, 8, 9, 2};
+    matrix m2 = createMatrixFromArray(b, 1, 4);
+
+    assert(areTwoMatricesEqual(m1, m2));
+}
+
+void test_sortByDistances3() {
+    int a[] = {6,
+               8,
+               9,
+               2};
+    matrix m1 = createMatrixFromArray(a, 4, 1);
+
+    sortByDistances(m1);
+
+    int b[] = {2,
+               6,
+               8,
+               9};
+    matrix m2 = createMatrixFromArray(b, 4, 1);
+
+    assert(areTwoMatricesEqual(m1, m2));
+}
+
+void test_sortByDistances() {
+    test_sortByDistances1();
+    test_sortByDistances2();
+    test_sortByDistances3();
+}
+
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
@@ -515,6 +596,7 @@ void test() {
     test_isMutuallyInverseMatrices();
     test_findSumOfMaxesOfPseudoDiagonal();
     test_getMinInArea();
+    test_sortByDistances();
 
     printf("everything is ok\n");
 }
