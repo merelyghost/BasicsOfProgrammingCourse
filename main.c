@@ -812,6 +812,94 @@ void test_swapPenultimateRow() {
     test_swapPenultimateRow2();
 }
 
+//----------------task 13---------
+bool isNonDescendingSorted(int *a, int n) {
+    for (int i = 1; i < n; i++)
+        if (a[i] < a[i - 1])
+            return false;
+    return true;
+}
+
+bool hasAllNonDescendingRows(matrix m) {
+    for (int i = 0; i < m.nRows; i++)
+        if (!isNonDescendingSorted(m.values[i], m.nCols))
+            return false;
+    return true;
+}
+
+int countNonDescendingRowsMatrices(matrix *ms, int nMatrix) {
+    int count = 0;
+    for (int i = 0; i < nMatrix; i++)
+        if (hasAllNonDescendingRows(ms[i]))
+            count++;
+
+    return count;
+}
+
+void test_countNonDescendingRowsMatrices1() {
+    matrix *ms = createArrayOfMatrixFromArray(
+            (int[]) {
+                    7, 9,
+                    1, 0,
+
+                    2, 4,
+                    4, 4,
+
+                    7, 4,
+                    3, 3,
+
+                    1, 9,
+                    5, 8
+            },
+            4, 2, 2);
+
+    assert(countNonDescendingRowsMatrices(ms, 4) == 2);
+
+    freeMemMatrices(ms, 4);
+}
+
+void test_countNonDescendingRowsMatrices2() {
+    matrix *ms = createArrayOfMatrixFromArray(
+            (int[]) {
+                    0, 0, 1,
+
+                    8, 8, 22,
+
+                    -4, 0, 7,
+
+                    1, -8, 3,
+            },
+            4, 1, 3);
+
+    assert(countNonDescendingRowsMatrices(ms, 4) == 3);
+
+    freeMemMatrices(ms, 4);
+}
+
+void test_countNonDescendingRowsMatrices3() {
+    matrix *ms = createArrayOfMatrixFromArray(
+            (int[]) {
+                    0,
+
+                    1,
+
+                    -1,
+
+                    1
+            },
+            4, 1, 1);
+
+    assert(countNonDescendingRowsMatrices(ms, 4) == 4);
+
+    freeMemMatrices(ms, 4);
+}
+
+void test_countNonDescendingRowsMatrices() {
+    test_countNonDescendingRowsMatrices1();
+    test_countNonDescendingRowsMatrices2();
+    test_countNonDescendingRowsMatrices3();
+}
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
@@ -826,6 +914,7 @@ void test() {
     test_getNSpecialElement();
     test_getLeftMin();
     test_swapPenultimateRow();
+    test_countNonDescendingRowsMatrices();
 
     printf("everything is ok\n");
 }
