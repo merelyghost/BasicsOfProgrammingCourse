@@ -665,6 +665,68 @@ void test_countEqClassesByRowsSum() {
     test_countEqClassesByRowsSum3();
 }
 
+//----------------task 11---------------
+
+int getNSpecialElement(matrix m) {
+    int countSpecialEl = 0;
+
+    for (int i = 0; i < m.nCols; i++) {
+        int sumCol = 0;
+        int maxEl = m.values[0][i];
+
+        for (int j = 0; j < m.nRows; j++) {
+            if (m.values[j][i] > maxEl)
+                maxEl = m.values[j][i];
+            sumCol += m.values[j][i];
+        }
+        sumCol -= maxEl;
+
+        if (maxEl > sumCol)
+            countSpecialEl++;
+    }
+
+    return countSpecialEl;
+}
+
+void test_getNSpecialElement1() {
+    int a[] = {3, 5, 5, 4,
+               2, 3, 6, 7,
+               12, 2, 1, 2};
+    matrix m = createMatrixFromArray(a, 3, 4);
+
+    assert(getNSpecialElement(m) == 2);
+}
+
+void test_getNSpecialElement2() {
+    int a[] = {3};
+    matrix m = createMatrixFromArray(a, 1, 1);
+
+    assert(getNSpecialElement(m) == 1);
+}
+
+void test_getNSpecialElement3() {
+    int a[] = {7, 7, 7, 7,
+               7, 7, 7, 7,
+               7, 7, 7, 7};
+    matrix m = createMatrixFromArray(a, 3, 4);
+
+    assert(getNSpecialElement(m) == 0);
+}
+
+void test_getNSpecialElement4() {
+    int a[] = {3, 4, 8, 7};
+    matrix m = createMatrixFromArray(a, 1, 4);
+
+    assert(getNSpecialElement(m) == 4);
+}
+
+void test_getNSpecialElement() {
+    test_getNSpecialElement1();
+    test_getNSpecialElement2();
+    test_getNSpecialElement3();
+    test_getNSpecialElement4();
+}
+
 
 void test() {
     test_swapRowsWithMinAndMaxEl();
@@ -677,6 +739,7 @@ void test() {
     test_getMinInArea();
     test_sortByDistances();
     test_countEqClassesByRowsSum();
+    test_getNSpecialElement();
 
     printf("everything is ok\n");
 }
