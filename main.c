@@ -758,7 +758,7 @@ void test_getLeftMin() {
 }
 
 
-void swapPenultimateRow(matrix m, int n) {
+void swapPenultimateRow(matrix m) {
     if (m.nRows < 2) {
         fprintf(stderr, "there is no penultimate row");
         exit(1);
@@ -778,11 +778,12 @@ void test_swapPenultimateRow1() {
                3, 5, 7,
                2, 4, 3};
     matrix m1 = createMatrixFromArray(a, 3, 3);
+    swapPenultimateRow(m1);
 
     int b[] = {7, 2, 3,
                7, 3, 2,
                2, 4, 3};
-    matrix m2 = createMatrixFromArray(a, 3, 3);
+    matrix m2 = createMatrixFromArray(b, 3, 3);
 
     assert(areTwoMatricesEqual(m1, m2));
 
@@ -794,10 +795,11 @@ void test_swapPenultimateRow2() {
     int a[] = {7, 2,
                -1, 5};
     matrix m1 = createMatrixFromArray(a, 2, 2);
+    swapPenultimateRow(m1);
 
     int b[] = {7, -1,
-               2, 5};
-    matrix m2 = createMatrixFromArray(a, 2, 2);
+               -1, 5};
+    matrix m2 = createMatrixFromArray(b, 2, 2);
 
     assert(areTwoMatricesEqual(m1, m2));
 
