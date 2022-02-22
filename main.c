@@ -586,6 +586,85 @@ void test_sortByDistances() {
     test_sortByDistances3();
 }
 
+//------------------task 10--------
+
+int cmp_long_long(const void *pa, const void *pb) {
+    long long arg1 = *(const long long *) pa;
+    long long arg2 = *(const long long *) pb;
+
+    if (arg1 < arg2)
+        return -1;
+    if (arg1 > arg2)
+        return 1;
+    return 0;
+}
+
+int countNUnique(long long *a, int n) {
+    if (n == 1)
+        return 1;
+
+    qsort(a, n, sizeof(long long), cmp_long_long);
+
+    int countOfUnique = 1;
+    for (int i = 1; i < n; i++) {
+        if (a[i] != a[i - 1])
+            countOfUnique++;
+    }
+
+    return countOfUnique;
+}
+
+int countEqClassesByRowsSum(matrix m) {
+    long long sumRows[m.nRows];
+    for (int i = 0; i < m.nRows; i++)
+        sumRows[i] = getSum(m.values[i], m.nCols);
+
+    return countNUnique(sumRows, m.nRows);
+}
+
+void test_countEqClassesByRowsSum1() {
+    int a[] = {7, 1,
+               2, 7,
+               5, 3,
+               1, 1,
+               2, 0,
+               7, 8};
+    matrix m = createMatrixFromArray(a, 6, 2);
+
+    assert(countEqClassesByRowsSum(m) == 4);
+
+    freeMemMatrix(m);
+}
+
+void test_countEqClassesByRowsSum2() {
+    int a[] = {7, 1, 2, 7};
+    matrix m = createMatrixFromArray(a, 1, 4);
+
+    assert(countEqClassesByRowsSum(m) == 1);
+
+    freeMemMatrix(m);
+}
+
+void test_countEqClassesByRowsSum3() {
+    int a[] = {7,
+               10,
+               5,
+               1,
+               2,
+               7};
+    matrix m = createMatrixFromArray(a, 6, 1);
+
+    assert(countEqClassesByRowsSum(m) == 5);
+
+    freeMemMatrix(m);
+}
+
+void test_countEqClassesByRowsSum() {
+    test_countEqClassesByRowsSum1();
+    test_countEqClassesByRowsSum2();
+    test_countEqClassesByRowsSum3();
+}
+
 
 void test() {
     test_swapRowsWithMinAndMaxEl();
@@ -597,6 +676,7 @@ void test() {
     test_findSumOfMaxesOfPseudoDiagonal();
     test_getMinInArea();
     test_sortByDistances();
+    test_countEqClassesByRowsSum();
 
     printf("everything is ok\n");
 }
