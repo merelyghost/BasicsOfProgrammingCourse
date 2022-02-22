@@ -341,8 +341,14 @@ void test_transposeIfMatrixHasNotEqualSumOfRows() {
 
 //------------------------task 6---------------
 
+// утечка памяти, нельзя в одну строку, освободить
 bool isMutuallyInverseMatrices(matrix m1, matrix m2) {
-    return isEMatrix(mulMatrices(m1, m2));
+    matrix product = mulMatrices(m1, m2);
+    bool isInverse = isEMatrix(product);
+
+    freeMemMatrix(product);
+
+    return isInverse;
 }
 
 void test_isMutuallyInverseMatrices1() {
@@ -376,6 +382,82 @@ void test_isMutuallyInverseMatrices() {
     test_isMutuallyInverseMatrices2();
 }
 
+//-----------------task 7--------------
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+long long findSumOfMaxesOfPseudoDiagonal(matrix m) {
+    int size = m.nRows + m.nCols - 1;
+    int maxElements[size];
+
+    for (int i = 0; i < size; i++)
+        maxElements[i] = INT_MIN;
+
+    for (int i = 0; i < m.nCols; i++) {
+        for (int j = 0; j < m.nRows; j++){
+            int index = i - j + m.nRows - 1;
+            maxElements[index] = max(maxElements[index], m.values[j][i]);
+        }
+    }
+
+    long long sum = getSum(maxElements, size);
+    return sum;
+}
+
+
+
+void test_findSumOfMaxesOfPseudoDiagonal1() {
+    int a[] = {2, 5, 7, 1,
+               6, 3, 4, 2,
+               5, -2, -3, 5};
+    matrix m = createMatrixFromArray(a, 3, 4);
+
+    long long sum = findSumOfMaxesOfPseudoDiagonal(m);
+    assert(sum == 27);
+}
+
+void test_findSumOfMaxesOfPseudoDiagonal2() {
+    int a[] = {};
+    matrix m = createMatrixFromArray(a, 0, 0);
+
+    long long sum = findSumOfMaxesOfPseudoDiagonal(m);
+    assert(sum == 0);
+}
+
+void test_findSumOfMaxesOfPseudoDiagonal3() {
+    int a[] = {2, 5, 7,
+               6, 3, 4,
+               5, -2, -3,
+               1, 8, 7};
+    matrix m = createMatrixFromArray(a, 4, 3);
+
+    long long sum = findSumOfMaxesOfPseudoDiagonal(m);
+    assert(sum == 31);
+}
+
+void test_findSumOfMaxesOfPseudoDiagonal4() {
+    int a[] = {-1, -7, -4,
+               -6, -2, -4,
+               -5, -2, -3};
+    matrix m = createMatrixFromArray(a, 3, 3);
+
+    long long sum = findSumOfMaxesOfPseudoDiagonal(m);
+    assert(sum == -16);
+}
+
+void test_findSumOfMaxesOfPseudoDiagonal() {
+    test_findSumOfMaxesOfPseudoDiagonal1();
+    test_findSumOfMaxesOfPseudoDiagonal2();
+    test_findSumOfMaxesOfPseudoDiagonal3();
+    test_findSumOfMaxesOfPseudoDiagonal4();
+}
+
+//-----------------task 8--------------
+
+
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
@@ -383,6 +465,7 @@ void test() {
     test_getSquareOfMatrixIfSymmetric();
     test_transposeIfMatrixHasNotEqualSumOfRows();
     test_isMutuallyInverseMatrices();
+    test_findSumOfMaxesOfPseudoDiagonal();
 
     printf("everything is ok\n");
 }
