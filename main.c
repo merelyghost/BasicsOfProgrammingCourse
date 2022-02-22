@@ -955,6 +955,59 @@ void test_countZeroRows() {
     test_countZeroRows2();
 }
 
+//------------------task 15-----------
+
+int getMatrixNorm(matrix m) {
+    int norm = abs(m.values[0][0]);
+
+    for (int i = 0; i < m.nRows; i++)
+        for (int j = 0; j < m.nCols; j++)
+            if (abs(m.values[i][j]) > norm)
+                norm = abs(m.values[i][j]);
+
+    return norm;
+}
+
+void printMatrixWithMinNorm(matrix *ms, int nMatrix) {
+    int norms[nMatrix];
+
+    for (int i = 0; i < nMatrix; i++)
+        norms[i] = getMatrixNorm(ms[i]);
+
+    int min = getMin(norms, nMatrix);
+    for (int i = 0; i < nMatrix; i++)
+        if (norms[i] == min)
+            outputMatrix(ms[i]);
+}
+
+void test_getMatrixNorm1() {
+    int a[] = {5, -6,
+               8, -20};
+    matrix m = createMatrixFromArray(a, 2, 2);
+
+    assert(getMatrixNorm(m) == 20);
+}
+
+void test_getMatrixNorm2() {
+    int a[] = {-5};
+    matrix m = createMatrixFromArray(a, 1, 1);
+
+    assert(getMatrixNorm(m) == 5);
+}
+
+void test_getMatrixNorm3() {
+    int a[] = {11, -45, 15};
+    matrix m = createMatrixFromArray(a, 1, 3);
+
+    assert(getMatrixNorm(m) == 45);
+}
+
+void test_getMatrixNorm() {
+    test_getMatrixNorm1();
+    test_getMatrixNorm2();
+    test_getMatrixNorm3();
+}
+
 void test() {
     test_swapRowsWithMinAndMaxEl();
     test_sortRowsByMaxElement();
@@ -971,6 +1024,7 @@ void test() {
     test_swapPenultimateRow();
     test_countNonDescendingRowsMatrices();
     test_countZeroRows();
+    test_getMatrixNorm();
 
     printf("everything is ok\n");
 }
