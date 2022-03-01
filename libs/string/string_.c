@@ -97,3 +97,18 @@ char *getEndOfString(char *begin) {
 
     return begin;
 }
+
+char* copyIfC(char *beginSource, const char *endSource, char *beginDestination, int (*f)(char *)) {
+    while (beginSource != endSource) {
+        if (f(beginSource))
+            *beginDestination++ = *beginSource;
+
+        beginSource++;
+    }
+
+    return beginDestination;
+}
+
+int nextIsNotEqual(char *c) {
+    return *c != *(c + 1);
+}

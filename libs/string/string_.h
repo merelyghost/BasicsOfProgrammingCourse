@@ -64,4 +64,8 @@ char* copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDesti
 // возвращает конец строки
 char *getEndOfString(char *begin);
 
+char* copyIfC(char *beginSource, const char *endSource, char *beginDestination, int (*f)(char *));
+// возвращает значение истина если значение по адресу с не равно следующему на ленте памяти, иначе - ложь
+int nextIsNotEqual(char *c);
+
 #endif
