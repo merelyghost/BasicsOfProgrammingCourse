@@ -5,8 +5,15 @@
 #include <ctype.h>
 #include <memory.h>
 
+#define ASSERT_STRING(expected, got) assertString(expected, got, \
+__FILE__ , __FUNCTION__ , __LINE__ )
+
+void assertString(const char *expected, char *got,
+                  char const *fileName, char const *funcName,
+                  int line);
+
 // возвращает количество символов в строке, не считая ноль-символ
-size_t strlen_(const char *begin);
+size_t strlen_(char *begin);
 
 // возвращает указатель на первый элемент с кодом ch,
 // расположенным на ленте памяти между адресами begin и end не включая end,
@@ -53,5 +60,8 @@ char* copyIf(char *beginSource, const char *endSource, char *beginDestination, i
 // заканчивая rendSource, удовлетворяющие функции-предикату f,
 // возвращает значение beginDestination по окончанию работы функции
 char* copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDestination, int (*f)(int));
+
+// возвращает конец строки
+char *getEndOfString(char *begin);
 
 #endif

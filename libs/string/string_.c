@@ -1,7 +1,19 @@
 #include "string_.h"
 
+void assertString(const char *expected, char *got,
+                  char const *fileName, char const *funcName,
+                  int line) {
+    int x = strcmp(expected, got);
+    if (x) {
+        fprintf(stderr, " File %s\n", fileName);
+        fprintf(stderr, "%s - failed on line %d\n", funcName, line);
+        fprintf(stderr, " Expected : \"%s\"\n", expected);
+        fprintf(stderr, "Got: \"%s\"\n\n", got);
+    } else
+        fprintf(stderr, "%s - OK\n", funcName);
+}
 
-size_t strlen_(const char *begin) {
+size_t strlen_(char *begin) {
     char *end = begin;
     while (*end != '\0')
         end++;
@@ -60,10 +72,9 @@ char* copy(const char *beginSource, const char *endSource, char *beginDestinatio
 char* copyIf(char *beginSource, const char *endSource, char *beginDestination, int (*f)(int)) {
     while (beginSource != endSource) {
         if (f(*beginSource))
-            *beginDestination = *beginSource;
+            *beginDestination++ = *beginSource;
 
         beginSource++;
-        beginDestination++;
     }
 
     return beginDestination;
@@ -72,11 +83,17 @@ char* copyIf(char *beginSource, const char *endSource, char *beginDestination, i
 char* copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDestination, int (*f)(int)) {
     while (rbeginSource != rendSource) {
         if (f(*rbeginSource))
-            *beginDestination = *rbeginSource;
+            *beginDestination++ = *rbeginSource;
 
         rbeginSource--;
-        beginDestination++;
     }
 
     return beginDestination;
+}
+
+char *getEndOfString(char *begin) {
+    while (*begin != '\0')
+        begin++;
+
+    return begin;
 }
