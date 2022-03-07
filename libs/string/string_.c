@@ -131,8 +131,8 @@ int getWord(char *beginSearch, WordDescriptor *word) {
 void digitsToStart(WordDescriptor word) {
     char *endStringBuffer = copy(word.begin, word.end, _stringBuffer);
     char *recPosition = copyIf(_stringBuffer,
-                                      endStringBuffer,
-                                      word.begin, isdigit);
+                               endStringBuffer,
+                               word.begin, isdigit);
     copyIf(_stringBuffer, endStringBuffer, recPosition, isalpha);
 }
 
@@ -144,4 +144,15 @@ int areWordsEqual(WordDescriptor w1, WordDescriptor w2) {
         beginW1++, beginW2++;
 
     return *beginW1 - *beginW2;
+}
+
+void getBagOfWords(BagOfWords *bag, char *s) {
+    char *beginSearch = s;
+    WordDescriptor word;
+    bag->size = 0;
+    while (getWord(beginSearch, &word)) {
+        bag->words[bag->size] = word;
+        bag->size++;
+        beginSearch = word.end;
+    }
 }
