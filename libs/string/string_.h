@@ -5,12 +5,22 @@
 #include <ctype.h>
 #include <memory.h>
 
+#define MAX_STRING_SIZE 100
 #define ASSERT_STRING(expected, got) assertString(expected, got, \
 __FILE__ , __FUNCTION__ , __LINE__ )
+
+char _stringBuffer[MAX_STRING_SIZE + 1];
+
 
 void assertString(const char *expected, char *got,
                   char const *fileName, char const *funcName,
                   int line);
+
+typedef struct WordDescriptor {
+    char *begin; // позиция начала слова
+    char *end;   // позиция первого символа, после последнего символа слова
+} WordDescriptor;
+
 
 // возвращает количество символов в строке, не считая ноль-символ
 size_t strlen_(char *begin);
@@ -49,23 +59,34 @@ int strcmp(const char *lhs, const char *rhs);
 
 // записывает по адресу beginDestination фрагмент памяти, начиная с адреса beginSource до endSource,
 // возвращает указатель на следующий свободный фрагмент памяти в destination
-char* copy(const char *beginSource, const char *endSource, char *beginDestination);
+char *copy(const char *beginSource, const char *endSource, char *beginDestination);
 
 // записывает по адресу beginDestination элементы из фрагмента памяти начиная с beginSource
 // заканчивая endSource, удовлетворяющие функции-предикату f,
 // возвращает указатель на следующий свободный для записи фрагмент в памяти
-char* copyIf(char *beginSource, const char *endSource, char *beginDestination, int (*f)(int));
+char *copyIf(char *beginSource, const char *endSource, char *beginDestination, int (*f)(int));
 
 // записывает по адресу beginDestination элементы из фрагмента памяти начиная с rbeginSource
 // заканчивая rendSource, удовлетворяющие функции-предикату f,
 // возвращает значение beginDestination по окончанию работы функции
-char* copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDestination, int (*f)(int));
+char *copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDestination, int (*f)(int));
 
 // возвращает конец строки
 char *getEndOfString(char *begin);
 
-char* copyIfC(char *beginSource, const char *endSource, char *beginDestination, int (*f)(char *));
+char *copyIfC(char *beginSource, const char *endSource, char *beginDestination, int (*f)(char *));
+
 // возвращает значение истина если значение по адресу с не равно следующему на ленте памяти, иначе - ложь
 int nextIsNotEqual(char *c);
+
+// возвращает значение 0, если слово не было считано, в противном
+// случае будет возвращает значение 1 и в переменную word типа WordDescriptor
+// записывает позиции начала слова, и первого символа после конца слова
+int getWord(char *beginSearch, WordDescriptor *word);
+
+// переносит цифры в слове word в начало
+void digitsToStart(WordDescriptor word);
+
+
 
 #endif

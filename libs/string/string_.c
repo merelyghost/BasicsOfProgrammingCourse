@@ -13,6 +13,7 @@ void assertString(const char *expected, char *got,
         fprintf(stderr, "%s - OK\n", funcName);
 }
 
+
 size_t strlen_(char *begin) {
     char *end = begin;
     while (*end != '\0')
@@ -28,33 +29,34 @@ char *find(char *begin, const char *end, int ch) {
     return begin;
 }
 
-char* findNonSpace(char *begin) {
+char *findNonSpace(char *begin) {
     while (*begin != '\0' && isspace(*begin))
         begin++;
 
     return begin;
 }
 
-char* findSpace(char *begin) {
+char *findSpace(char *begin) {
     while (*begin != '\0' && !isspace(*begin))
         begin++;
 
     return begin;
 }
 
-char* findNonSpaceReverse(char *rbegin, const char *rend)  {
+char *findNonSpaceReverse(char *rbegin, const char *rend) {
     while (rbegin != rend && isspace(*rbegin))
         rbegin--;
 
     return rbegin;
 }
 
-char* findSpaceReverse(char *rbegin, const char *rend) {
+char *findSpaceReverse(char *rbegin, const char *rend) {
     while (rbegin != rend && !isspace(*rbegin))
         rbegin--;
 
     return rbegin;
 }
+
 
 int strcmp(const char *lhs, const char *rhs) {
     while (*lhs != '\0' && (*lhs == *rhs))
@@ -63,13 +65,14 @@ int strcmp(const char *lhs, const char *rhs) {
     return *lhs - *rhs;
 }
 
-char* copy(const char *beginSource, const char *endSource, char *beginDestination) {
+
+char *copy(const char *beginSource, const char *endSource, char *beginDestination) {
     memcpy(beginDestination, beginSource, endSource - beginSource);
 
     return beginDestination + (endSource - beginSource);
 }
 
-char* copyIf(char *beginSource, const char *endSource, char *beginDestination, int (*f)(int)) {
+char *copyIf(char *beginSource, const char *endSource, char *beginDestination, int (*f)(int)) {
     while (beginSource != endSource) {
         if (f(*beginSource))
             *beginDestination++ = *beginSource;
@@ -80,7 +83,7 @@ char* copyIf(char *beginSource, const char *endSource, char *beginDestination, i
     return beginDestination;
 }
 
-char* copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDestination, int (*f)(int)) {
+char *copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDestination, int (*f)(int)) {
     while (rbeginSource != rendSource) {
         if (f(*rbeginSource))
             *beginDestination++ = *rbeginSource;
@@ -91,6 +94,7 @@ char* copyIfReverse(char *rbeginSource, const char *rendSource, char *beginDesti
     return beginDestination;
 }
 
+
 char *getEndOfString(char *begin) {
     while (*begin != '\0')
         begin++;
@@ -98,7 +102,7 @@ char *getEndOfString(char *begin) {
     return begin;
 }
 
-char* copyIfC(char *beginSource, const char *endSource, char *beginDestination, int (*f)(char *)) {
+char *copyIfC(char *beginSource, const char *endSource, char *beginDestination, int (*f)(char *)) {
     while (beginSource != endSource) {
         if (f(beginSource))
             *beginDestination++ = *beginSource;
@@ -112,3 +116,23 @@ char* copyIfC(char *beginSource, const char *endSource, char *beginDestination, 
 int nextIsNotEqual(char *c) {
     return *c != *(c + 1);
 }
+
+
+int getWord(char *beginSearch, WordDescriptor *word) {
+    word->begin = findNonSpace(beginSearch);
+    if (*word->begin == '\0')
+        return 0;
+
+    word->end = findSpace(word->begin);
+
+    return 1;
+}
+
+void digitsToStart(WordDescriptor word) {
+    char *endStringBuffer = copy(word.begin, word.end, _stringBuffer);
+    char *recPosition = copyIf(_stringBuffer,
+                                      endStringBuffer,
+                                      word.begin, isdigit);
+    copyIf(_stringBuffer, endStringBuffer, recPosition, isalpha);
+}
+
