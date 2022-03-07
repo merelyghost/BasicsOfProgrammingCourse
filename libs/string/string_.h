@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <memory.h>
+#include <stdbool.h>
+#include <assert.h>
 
 #define MAX_STRING_SIZE 100
+#define MAX_N_WORDS_IN_STRING 100
+#define MAX_WORD_SIZE 20
+
 #define ASSERT_STRING(expected, got) assertString(expected, got, \
 __FILE__ , __FUNCTION__ , __LINE__ )
 
@@ -87,6 +92,6 @@ int getWord(char *beginSearch, WordDescriptor *word);
 // переносит цифры в слове word в начало
 void digitsToStart(WordDescriptor word);
 
-
+int areWordsEqual(WordDescriptor w1, WordDescriptor w2);
 
 #endif
