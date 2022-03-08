@@ -137,6 +137,18 @@ int getWord(char *beginSearch, WordDescriptor *word) {
     return 1;
 }
 
+int getLastWord(char *beginSearchR, char *endSearchR, WordDescriptor *word) {
+    word->end = findNonSpaceReverse(beginSearchR, endSearchR);
+
+    if (word->end == endSearchR)
+        return 0;
+
+    word->begin = findSpaceReverse(word->end, endSearchR);
+    word->begin++, word->end++;
+
+    return 1;
+}
+
 void digitsToStart(WordDescriptor word) {
     char *endStringBuffer = copy(word.begin, word.end, _stringBuffer);
     char *recPosition = copyIf(_stringBuffer,
