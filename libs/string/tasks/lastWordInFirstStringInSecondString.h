@@ -4,8 +4,6 @@
 #include "../string_.h"
 
 
-
-
 // Даны две строки. Определить последнее из слов первой строки, которое есть во второй строке.
 
 WordDescriptor lastWordInFirstStringInSecondString(char *s1, char *s2) {
@@ -13,18 +11,23 @@ WordDescriptor lastWordInFirstStringInSecondString(char *s1, char *s2) {
     getBagOfWords(&_bag2, s2);
     WordDescriptor word = {NULL, NULL};
 
-    for (int i = (int)_bag.size - 1; i >= 0; i--) {
-        for (int j = 0; j < _bag2.size; j++) {
-            if (areWordsEqual(_bag.words[i], _bag2.words[j]) == 0)
-                return _bag.words[i];
+    WordDescriptor *readBagR = _bag.words + _bag.size - 1;
+    WordDescriptor *readBag2 = _bag2.words;
+    while (readBagR >= _bag.words) {
+        WordDescriptor *w = readBag2;
+        while (w < _bag2.words + _bag2.size) {
+            if (areWordsEqual(*readBagR, *w) == 0)
+                return *readBagR;
+            w++;
         }
+        readBagR--;
     }
     return word;
 }
 
 void test_lastWordInFirstStringInSecondString1() {
-    char s1[] = "abc def gg h1 h2";
-    char s2[] = "abc fhfh gg def";
+    char s1[] = "abc def gg h2 h1 ";
+    char s2[] = "abc fhfh j gg def";
     WordDescriptor word = lastWordInFirstStringInSecondString(s1, s2);
 
     char res[MAX_STRING_SIZE];
