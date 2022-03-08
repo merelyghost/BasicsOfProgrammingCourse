@@ -42,6 +42,7 @@ typedef struct BagOfWords {
 } BagOfWords;
 
 BagOfWords _bag;
+BagOfWords _bag2;
 
 // возвращает количество символов в строке, не считая ноль-символ
 size_t strlen_(char *begin);
@@ -113,5 +114,7 @@ void digitsToStart(WordDescriptor word);
 int areWordsEqual(WordDescriptor w1, WordDescriptor w2);
 
 void getBagOfWords(BagOfWords *bag, char *s);
+
+void wordDescriptorToString(WordDescriptor word, char *destination);
 
 #endif
