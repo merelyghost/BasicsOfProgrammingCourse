@@ -21,6 +21,16 @@ void assertString(const char *expected, char *got,
                   char const *fileName, char const *funcName,
                   int line);
 
+typedef enum WordBeforeFirstWordWithAReturnCode {
+    FIRST_WORD_WITH_A,
+    NOT_FOUND_A_WORD_WITH_A,
+    WORD_FOUND,
+    EMPTY_STRING
+} WordBeforeFirstWordWithAReturnCode;
+
+WordBeforeFirstWordWithAReturnCode getWordBeforeFirstWordWithA(char *s, char **beginWordBefore, char **endWordBefore);
+
+
 typedef struct WordDescriptor {
     char *begin; // позиция начала слова
     char *end;   // позиция первого символа, после последнего символа слова
