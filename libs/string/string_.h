@@ -31,6 +31,7 @@ typedef struct BagOfWords {
     size_t size;
 } BagOfWords;
 
+BagOfWords _bag;
 
 // возвращает количество символов в строке, не считая ноль-символ
 size_t strlen_(char *begin);
@@ -70,6 +71,8 @@ int strcmp(const char *lhs, const char *rhs);
 // записывает по адресу beginDestination фрагмент памяти, начиная с адреса beginSource до endSource,
 // возвращает указатель на следующий свободный фрагмент памяти в destination
 char *copy(const char *beginSource, const char *endSource, char *beginDestination);
+
+void copyReverse(char *rbeginSource, const char *rendSource, char *beginDestination);
 
 // записывает по адресу beginDestination элементы из фрагмента памяти начиная с beginSource
 // заканчивая endSource, удовлетворяющие функции-предикату f,

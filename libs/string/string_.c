@@ -72,6 +72,15 @@ char *copy(const char *beginSource, const char *endSource, char *beginDestinatio
     return beginDestination + (endSource - beginSource);
 }
 
+void copyReverse(char *rbeginSource, const char *rendSource, char *beginDestination) {
+    while (rbeginSource != rendSource) {
+        *beginDestination++ = *rbeginSource;
+
+        rbeginSource--;
+    }
+    *beginDestination = '\0';
+}
+
 char *copyIf(char *beginSource, const char *endSource, char *beginDestination, int (*f)(int)) {
     while (beginSource != endSource) {
         if (f(*beginSource))
