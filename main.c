@@ -34,6 +34,13 @@ typedef struct GeneratingFunc {
     // используемое при выводе
 } GeneratingFunc;
 
+typedef struct nCompSort {
+    long long (*nComp)(int *a, size_t n); // указатель на функцию
+    // сортировки
+    char name[64];                   // имя сортировки,
+    // используемое при выводе
+} nCompSort;
+
 
 bool isOrdered(const int *a, size_t size) {
     for (int i = 0; i < size - 1; i++)
@@ -91,6 +98,45 @@ void checkTime(void (*sortFunc)(int *, size_t),
     }
 }
 
+void checkNComp(long long (*nComp )(int *a, size_t n),
+                void (*generateFunc)(int *, size_t),
+                size_t size, char *experimentName, char *name) {
+    static size_t runCounter = 1;
+
+    // генерация последовательности
+    static int innerBuffer[100000];
+    generateFunc(innerBuffer, size);
+    printf("Run #%zu| ", runCounter++);
+    printf("Name: %s\n", experimentName);
+
+    // замер времени
+    long long nComps = nComp(innerBuffer, size);
+
+    // результаты замера
+    printf("Status: ");
+    if (isOrdered(innerBuffer, size)) {
+        printf("OK! Comps: %lld\n", nComps);
+
+        // запись в файл
+        char filename[256];
+        mkdir("data/comp");
+        sprintf(filename, "data/comp/%s.csv", experimentName);
+        FILE *f = fopen(filename, "a");
+        if (f == NULL) {
+            printf("FileOpenError %s", filename);
+            exit(1);
+        }
+        fprintf(f, "%zu; %lld\n", size, nComps);
+        fclose(f);
+    } else {
+        printf("Wrong!\n");
+
+        // вывод массива, который не смог быть отсортирован
+        outputArray_(innerBuffer, size);
+
+        exit(1);
+    }
+}
 
 void generateRandomArray(int *a, size_t size) {
     srand(time(0));
@@ -120,6 +166,16 @@ void timeExperiment() {
     };
     const unsigned FUNCS_N = ARRAY_SIZE(sorts);
 
+    nCompSort nComps[] = {
+            {selectionSortNComp, "selectionSortNComp"},
+            {insertionSortNComp, "insertionSortNComp"},
+            {bubbleSortNComp,    "bubbleSortNComp"},
+            {combSortNComp,      "combSortNComp"},
+            {shellSortNComp,     "shellSortNComp"},
+    };
+
+    const unsigned COMPS_N = ARRAY_SIZE(nComps);
+
     // описание функций генерации
     GeneratingFunc generatingFuncs[] = {
             // генерируется случайный массив
@@ -148,7 +204,25 @@ void timeExperiment() {
         }
         printf("\n");
     }
+
+    for (size_t size = 10000; size <= 100000; size += 10000) {
+        printf("------------------------------\n");
+        printf("Size: %zu\n", size);
+        for (int i = 0; i < COMPS_N; i++) {
+            for (int j = 0; j < CASES_N; j++) {
+                // генерация имени файла
+                static char filename[128];
+                sprintf(filename, "%s_%s_comps",
+                        nComps[i].name, generatingFuncs[j].name);
+                checkNComp(nComps[i].nComp,
+                           generatingFuncs[j].generate,
+                           size, filename, nComps[i].name);
+            }
+        }
+        printf("\n");
+    }
 }
+
 
 int main() {
     timeExperiment();
